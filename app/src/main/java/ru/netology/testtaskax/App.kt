@@ -13,9 +13,6 @@ class App: Application() {
     override fun onCreate() {
         super.onCreate()
         repository = CommentRepositoryImpl()
-       //     AppDb.getInstance(applicationContext)
-        //        .ValuteDao()
-       // )
     }
 
 }
