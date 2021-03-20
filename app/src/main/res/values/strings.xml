@@ -5,5 +5,5 @@
     <string name="title_name">От пользователя: %s</string>
     <string name="title_date">Получено: %s</string>
     <string name="title_timer">Обновление через: %s сек</string>
-
+    <string name="title_update">Информация обновлена</string>
 </resources>

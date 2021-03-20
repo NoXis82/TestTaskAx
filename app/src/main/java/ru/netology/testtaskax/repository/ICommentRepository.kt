@@ -1,9 +1,11 @@
 package ru.netology.testtaskax.repository
 
-import ru.netology.testtaskax.dto.Comment
+import androidx.lifecycle.LiveData
+import ru.netology.testtaskax.dto.CommentDto
 
 interface ICommentRepository {
-
-    suspend fun getAllComments(id: Int): List<Comment>
+    val comments: LiveData<List<CommentDto>>
+    suspend fun getAllComments(id: Int)
+    suspend fun getList() : List<CommentDto>
 
 }

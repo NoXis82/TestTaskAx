@@ -8,10 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.netology.testtaskax.R
 import ru.netology.testtaskax.databinding.CommentCardBinding
 import ru.netology.testtaskax.dto.Comment
+import ru.netology.testtaskax.dto.CommentDto
+import java.util.*
 
 class CommentAdapter(
     private val onActionListener: IOnActionListener
-) : ListAdapter<Comment, CommentViewHolder>(CommentDiffCallback()) {
+) : ListAdapter<CommentDto, CommentViewHolder>(CommentDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
         val commentView = CommentCardBinding.inflate(
@@ -33,11 +35,11 @@ class CommentViewHolder(
     private val binding: CommentCardBinding,
     private val onActionListener: IOnActionListener
 ) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(comment: Comment, context: Context) {
+    fun bind(comment: CommentDto, context: Context) {
         binding.apply {
             tvPostId.text = context.getString(R.string.title_postId, comment.postId)
             tvNameUser.text = context.getString(R.string.title_name, comment.name)
-            //tvDate.text = context.getString(R.string.title_date, comment.date)
+            tvDate.text = context.getString(R.string.title_date, Date(comment.date).toString())
             binding.root.setOnClickListener {
                 onActionListener.onClickComment(comment)
             }

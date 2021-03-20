@@ -11,7 +11,7 @@ import ru.netology.testtaskax.R
 import ru.netology.testtaskax.adapter.CommentAdapter
 import ru.netology.testtaskax.adapter.IOnActionListener
 import ru.netology.testtaskax.databinding.FragmentWidgetBinding
-import ru.netology.testtaskax.dto.Comment
+import ru.netology.testtaskax.dto.CommentDto
 import ru.netology.testtaskax.viewmodel.CommentViewModel
 
 class WidgetFragment : Fragment() {
@@ -23,13 +23,13 @@ class WidgetFragment : Fragment() {
     ): View? {
         val binding = FragmentWidgetBinding.inflate(layoutInflater)
         val adapter = CommentAdapter(object : IOnActionListener {
-            override fun onClickComment(comment: Comment) {
+            override fun onClickComment(comment: CommentDto) {
                 Toast.makeText(requireContext(), comment.email, Toast.LENGTH_SHORT).show()
             }
         })
         binding.rvCommentsView.adapter = adapter
         viewModel.data.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+            adapter.submitList(viewModel.equalsLists(it))
         }
         viewModel.timer.observe(viewLifecycleOwner) {
             binding.tvTimer.text = requireContext().getString(R.string.title_timer, it.toString())

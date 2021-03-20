@@ -1,7 +1,7 @@
 package ru.netology.testtaskax.adapter
 
-import ru.netology.testtaskax.dto.Comment
+import ru.netology.testtaskax.dto.*
 
 interface IOnActionListener {
-    fun onClickComment(comment: Comment)
+    fun onClickComment(comment: CommentDto)
 }

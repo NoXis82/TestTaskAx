@@ -9,7 +9,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.netology.testtaskax.App
-import ru.netology.testtaskax.dto.Comment
+import ru.netology.testtaskax.R
+import ru.netology.testtaskax.dto.CommentDto
+import java.io.IOException
 
 class CommentViewModel(application: Application) : AndroidViewModel(application) {
     private val LIMIT_ID = 3 //32
@@ -17,16 +19,13 @@ class CommentViewModel(application: Application) : AndroidViewModel(application)
     private var currentPostId = 0
     private val preferences = getApplication<Application>()
         .getSharedPreferences(PREFERENCE_KEY, Application.MODE_PRIVATE)
-
+    private var _oldList = mutableListOf<CommentDto>()
     private val repository = App.repository
     private val _timer = MutableLiveData<Long>()
     val timer: LiveData<Long>
         get() = _timer
-
-
-    private val _data = MutableLiveData<List<Comment>>()
-    val data: LiveData<List<Comment>>
-        get() = _data
+    val data: LiveData<List<CommentDto>>
+        get() = repository.comments
 
     init {
         load()
@@ -35,10 +34,27 @@ class CommentViewModel(application: Application) : AndroidViewModel(application)
     private fun load() {
         incAndPrefPostId()
         viewModelScope.launch {
-            _data.value = repository.getAllComments(id = currentPostId)
+            try {
+                _oldList = _oldList.union(repository.getList()).toMutableList()
+                repository.getAllComments(id = currentPostId)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
         }
         timer()
     }
+
+    fun equalsLists(dataList: List<CommentDto>): List<CommentDto> {
+        if (!dataList.containsAll(_oldList)) {
+            Toast.makeText(
+                getApplication<Application>().applicationContext,
+                R.string.title_update,
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        return dataList
+    }
+
 
     private fun incAndPrefPostId() {
         val prefValue = preferences.getInt(PREFERENCE_KEY, 0)

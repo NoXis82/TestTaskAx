@@ -1,7 +1,6 @@
 package ru.netology.testtaskax.dto
 
 import com.google.gson.annotations.SerializedName
-import java.util.*
 
 data class Comment(
     @SerializedName("postId")
@@ -14,11 +13,4 @@ data class Comment(
     val email: String,
     @SerializedName("body")
     val body: String,
-//    var _date: String? = null
-) //{
-//      var date: String
-//        get() = _date ?: Calendar.getInstance().time.toString()
-//    set(value) {
-//        _date = value
-//    }
-//}
+)
