@@ -18,11 +18,6 @@ private val retrofit = Retrofit.Builder()
     .client(client)
     .build()
 
-interface CommentsApiService {
-    @GET("comments?")
-    suspend fun getAllComments(@Query("postId") id: Int): List<Comment>
-}
-
 object CommentApi {
-    val retrofitService: CommentsApiService by lazy(retrofit::create)
+    val retrofitService: ICommentsApiService by lazy(retrofit::create)
 }
