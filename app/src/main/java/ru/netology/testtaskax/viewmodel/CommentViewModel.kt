@@ -43,7 +43,8 @@ class CommentViewModel(application: Application) : AndroidViewModel(application)
         incAndPrefPostId()
         viewModelScope.launch {
             try {
-                _oldList = _oldList.union(repository.getList()).toMutableList()
+                _oldList.clear()
+                _oldList = repository.getList().toMutableList()
                 repository.getAllComments(id = currentPostId)
                 _state.value = false
             } catch (e: IOException) {
@@ -102,9 +103,9 @@ class CommentViewModel(application: Application) : AndroidViewModel(application)
     }
 
     private fun timer() {
-        val timer = object : CountDownTimer(60_000, 1000) {
+        val timer = object : CountDownTimer(60_000, 1_000) {
             override fun onTick(millisUntilFinished: Long) {
-                _timer.value = millisUntilFinished / 1000
+                _timer.value = millisUntilFinished / 1_000
             }
 
             override fun onFinish() {
