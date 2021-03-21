@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.testtaskax.R
 import ru.netology.testtaskax.databinding.CommentCardBinding
-import ru.netology.testtaskax.dto.Comment
 import ru.netology.testtaskax.dto.CommentDto
 import java.util.*
 

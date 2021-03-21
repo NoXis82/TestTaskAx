@@ -7,5 +7,4 @@ interface ICommentRepository {
     val comments: LiveData<List<CommentDto>>
     suspend fun getAllComments(id: Int)
     suspend fun getList() : List<CommentDto>
-
 }

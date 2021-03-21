@@ -3,7 +3,6 @@ package ru.netology.testtaskax.dto
 import androidx.room.*
 import java.util.*
 
-
 @Entity
 data class CommentDto(
     @PrimaryKey(autoGenerate = true)
@@ -15,15 +14,7 @@ data class CommentDto(
     val body: String,
     val date: Long,
 ) {
-    fun toDto() =
-        Comment(
-            postId,
-            id,
-            name,
-            email,
-            body,
 
-        )
     companion object {
         fun fromDto(dto: Comment) = CommentDto(
             0,

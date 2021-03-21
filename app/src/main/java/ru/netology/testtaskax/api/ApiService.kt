@@ -4,8 +4,6 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
-import retrofit2.http.*
-import ru.netology.testtaskax.dto.Comment
 import java.util.concurrent.TimeUnit
 
 private const val BASE_URL = "https://jsonplaceholder.typicode.com/"
