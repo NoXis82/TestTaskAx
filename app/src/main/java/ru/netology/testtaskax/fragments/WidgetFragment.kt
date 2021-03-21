@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import ru.netology.testtaskax.R
 import ru.netology.testtaskax.adapter.CommentAdapter
 import ru.netology.testtaskax.adapter.IOnActionListener
@@ -24,7 +25,7 @@ class WidgetFragment : Fragment() {
         val binding = FragmentWidgetBinding.inflate(layoutInflater)
         val adapter = CommentAdapter(object : IOnActionListener {
             override fun onClickComment(comment: CommentDto) {
-                Toast.makeText(requireContext(), comment.email, Toast.LENGTH_SHORT).show()
+                viewModel.clickComment(comment, findNavController())
             }
         })
         binding.rvCommentsView.adapter = adapter

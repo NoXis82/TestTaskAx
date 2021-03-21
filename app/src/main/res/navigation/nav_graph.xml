@@ -8,8 +8,42 @@
     <fragment
         android:id="@+id/widgetFragment"
         android:name="ru.netology.testtaskax.fragments.WidgetFragment"
-        android:label="WidgetFragment"
-        tools:layout="@layout/fragment_widget" />
+        android:label="@string/title_widget_fragment"
+        tools:layout="@layout/fragment_widget" >
+        <action
+            android:id="@+id/action_widgetFragment_to_commentViewFragment"
+            app:destination="@id/commentViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/commentViewFragment"
+        android:name="ru.netology.testtaskax.fragments.CommentViewFragment"
+        android:label="@string/title_comment_view"
+        tools:layout="@layout/fragment_comment_view" >
+        <argument
+            android:name="postId"
+            app:argType="integer"
+            android:defaultValue="0"/>
+        <argument
+            android:name="id"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="name"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="email"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="body"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="date"
+            app:argType="long"
+            android:defaultValue="0L" />
+    </fragment>
 
 
 </navigation>

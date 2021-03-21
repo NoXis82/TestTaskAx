@@ -7,10 +7,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import ru.netology.testtaskax.App
 import ru.netology.testtaskax.R
 import ru.netology.testtaskax.dto.CommentDto
+import ru.netology.testtaskax.fragments.WidgetFragmentDirections
 import java.io.IOException
 
 class CommentViewModel(application: Application) : AndroidViewModel(application) {
@@ -44,6 +46,22 @@ class CommentViewModel(application: Application) : AndroidViewModel(application)
         timer()
     }
 
+    fun onClickEmail() {
+
+    }
+
+    fun clickComment(commentDto: CommentDto, navController: NavController) {
+        val action = WidgetFragmentDirections.actionWidgetFragmentToCommentViewFragment(
+            postId = commentDto.postId,
+            id = commentDto.id,
+            name = commentDto.name,
+            email = commentDto.email,
+            body = commentDto.body,
+            date = commentDto.date
+        )
+        navController.navigate(action)
+    }
+
     fun equalsLists(dataList: List<CommentDto>): List<CommentDto> {
         if (!dataList.containsAll(_oldList)) {
             Toast.makeText(
@@ -67,7 +85,7 @@ class CommentViewModel(application: Application) : AndroidViewModel(application)
     }
 
     private fun timer() {
-        val timer = object : CountDownTimer(10_000, 1000) {
+        val timer = object : CountDownTimer(60_000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 _timer.value = millisUntilFinished / 1000
             }
