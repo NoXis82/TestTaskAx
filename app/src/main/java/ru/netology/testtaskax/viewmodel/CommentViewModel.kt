@@ -34,7 +34,6 @@ class CommentViewModel(application: Application) : AndroidViewModel(application)
     val state: LiveData<Boolean>
         get() = _state
 
-
     init {
         load()
     }
@@ -91,7 +90,6 @@ class CommentViewModel(application: Application) : AndroidViewModel(application)
         }
         return dataList
     }
-
 
     private fun incAndPrefPostId() {
         val prefValue = preferences.getInt(PREFERENCE_KEY, 0)
