@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.testtaskax.R
@@ -29,11 +30,14 @@ class WidgetFragment : Fragment() {
             }
         })
         binding.rvCommentsView.adapter = adapter
-        viewModel.data.observe(viewLifecycleOwner) {
-            adapter.submitList(viewModel.equalsLists(it))
+        viewModel.data.observe(viewLifecycleOwner) { list ->
+            adapter.submitList(viewModel.equalsLists(list))
         }
-        viewModel.timer.observe(viewLifecycleOwner) {
-            binding.tvTimer.text = requireContext().getString(R.string.title_timer, it.toString())
+        viewModel.timer.observe(viewLifecycleOwner) {time ->
+            binding.tvTimer.text = requireContext().getString(R.string.title_timer, time.toString())
+        }
+        viewModel.state.observe(viewLifecycleOwner) { state ->
+            binding.pbProgressLoad.isVisible = state
         }
         return binding.root
     }

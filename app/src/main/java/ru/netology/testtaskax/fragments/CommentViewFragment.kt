@@ -6,11 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import ru.netology.testtaskax.R
 import ru.netology.testtaskax.databinding.FragmentCommentViewBinding
+import ru.netology.testtaskax.viewmodel.CommentViewModel
 import java.util.*
 
 class CommentViewFragment : Fragment() {
+    private val viewModel: CommentViewModel by viewModels(ownerProducer = ::requireParentFragment)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -20,7 +23,7 @@ class CommentViewFragment : Fragment() {
         val postId = arguments?.let { CommentViewFragmentArgs.fromBundle(it).postId }
         val commentId = arguments?.let { CommentViewFragmentArgs.fromBundle(it).id }
         val nameAuthor = arguments?.let { CommentViewFragmentArgs.fromBundle(it).name }
-        val emailAuthor = arguments?.let { CommentViewFragmentArgs.fromBundle(it).email }
+        val emailAuthor = arguments?.let { CommentViewFragmentArgs.fromBundle(it).email }.orEmpty()
         val bodyComment = arguments?.let { CommentViewFragmentArgs.fromBundle(it).body }
         val dateComment = arguments?.let { CommentViewFragmentArgs.fromBundle(it).date } ?: 0
         binding.apply {
@@ -33,8 +36,7 @@ class CommentViewFragment : Fragment() {
                 requireContext().getString(R.string.title_text_view, Date(dateComment).toString())
             tvBodyComment.text = bodyComment
             tvEmailAuthor.setOnClickListener {
-                Toast.makeText(requireContext(), "Здесь будет переход !!!", Toast.LENGTH_SHORT)
-                    .show()
+                viewModel.onClickEmail(emailAuthor)
             }
         }
         return binding.root

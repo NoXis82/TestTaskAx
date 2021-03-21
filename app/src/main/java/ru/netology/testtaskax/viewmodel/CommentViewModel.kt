@@ -1,6 +1,8 @@
 package ru.netology.testtaskax.viewmodel
 
 import android.app.Application
+import android.content.Intent
+import android.net.Uri
 import android.os.CountDownTimer
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
@@ -16,7 +18,7 @@ import ru.netology.testtaskax.fragments.WidgetFragmentDirections
 import java.io.IOException
 
 class CommentViewModel(application: Application) : AndroidViewModel(application) {
-    private val LIMIT_ID = 3 //32
+    private val LIMIT_ID = 32
     private val PREFERENCE_KEY = "postId"
     private var currentPostId = 0
     private val preferences = getApplication<Application>()
@@ -28,26 +30,43 @@ class CommentViewModel(application: Application) : AndroidViewModel(application)
         get() = _timer
     val data: LiveData<List<CommentDto>>
         get() = repository.comments
+    private val _state = MutableLiveData(false)
+    val state: LiveData<Boolean>
+        get() = _state
+
 
     init {
         load()
     }
 
     private fun load() {
+        _state.value = true
         incAndPrefPostId()
         viewModelScope.launch {
             try {
                 _oldList = _oldList.union(repository.getList()).toMutableList()
                 repository.getAllComments(id = currentPostId)
+                _state.value = false
             } catch (e: IOException) {
                 e.printStackTrace()
+                Toast.makeText(
+                    getApplication<Application>().applicationContext,
+                    R.string.error_connect,
+                    Toast.LENGTH_SHORT
+                ).show()
+                _state.value = false
             }
         }
         timer()
     }
 
-    fun onClickEmail() {
-
+    fun onClickEmail(toEmail: String) {
+        val intent = Intent().apply {
+            action = Intent.ACTION_SENDTO
+            data = Uri.parse("mailto: $toEmail")
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        getApplication<Application>().startActivity(intent)
     }
 
     fun clickComment(commentDto: CommentDto, navController: NavController) {
