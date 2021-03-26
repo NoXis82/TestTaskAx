@@ -25,19 +25,19 @@ class WidgetFragment : Fragment() {
         val binding = FragmentWidgetBinding.inflate(layoutInflater)
         val adapter = CommentAdapter(object : IOnActionListener {
             override fun onClickComment(comment: CommentDto) {
-                viewModel.clickComment(comment, findNavController())
+        //        viewModel.clickComment(comment, findNavController())
             }
         })
-        binding.rvCommentsView.adapter = adapter
-        viewModel.data.observe(viewLifecycleOwner) { list ->
-            adapter.submitList(viewModel.equalsLists(list))
-        }
-        viewModel.timer.observe(viewLifecycleOwner) {time ->
-            binding.tvTimer.text = requireContext().getString(R.string.title_timer, time.toString())
-        }
-        viewModel.state.observe(viewLifecycleOwner) { state ->
-            binding.pbProgressLoad.isVisible = state
-        }
+//        binding.rvCommentsView.adapter = adapter
+//        viewModel.data.observe(viewLifecycleOwner) { list ->
+//            adapter.submitList(viewModel.equalsLists(list))
+//        }
+//        viewModel.timer.observe(viewLifecycleOwner) {time ->
+//            binding.tvTimer.text = requireContext().getString(R.string.title_timer, time.toString())
+//        }
+//        viewModel.state.observe(viewLifecycleOwner) { state ->
+//            binding.pbProgressLoad.isVisible = state
+//        }
         return binding.root
     }
 

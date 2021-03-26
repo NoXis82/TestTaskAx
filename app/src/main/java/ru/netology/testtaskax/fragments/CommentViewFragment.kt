@@ -35,7 +35,7 @@ class CommentViewFragment : Fragment() {
                 requireContext().getString(R.string.title_text_view, Date(dateComment).toString())
             tvBodyComment.text = bodyComment
             tvEmailAuthor.setOnClickListener {
-                viewModel.onClickEmail(emailAuthor)
+          //      viewModel.onClickEmail(emailAuthor)
             }
         }
         return binding.root
