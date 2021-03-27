@@ -15,13 +15,13 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        initDagger()
+        initDagger(this)
     }
 
-    private fun initDagger() {
+    private fun initDagger(application: Application) {
         appComponent = DaggerAppComponent
             .builder()
-            .appModule(AppModule(applicationContext))
+            .appModule(AppModule(application))
             .build()
     }
 

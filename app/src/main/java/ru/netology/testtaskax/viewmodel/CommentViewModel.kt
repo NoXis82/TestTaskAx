@@ -8,46 +8,41 @@ import android.widget.Toast
 import androidx.lifecycle.*
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
-import ru.netology.testtaskax.App
 import ru.netology.testtaskax.R
 import ru.netology.testtaskax.dto.CommentDto
 import ru.netology.testtaskax.fragments.WidgetFragmentDirections
 import ru.netology.testtaskax.repository.ICommentRepository
+import ru.netology.testtaskax.sharedpref.IPreferencesHelper
 import java.io.IOException
 import javax.inject.Inject
 
 class CommentViewModel @Inject constructor(
-    private val repository: ICommentRepository
-) : ViewModel()
-{
+    app: Application,
+    private val repository: ICommentRepository,
+    private val preferences: IPreferencesHelper
+) : AndroidViewModel(app) {
 
-
-//    private val LIMIT_ID = 32
-//    private val PREFERENCE_KEY = "postId"
-    private var currentPostId = 1 //0
-//
-//    private val preferences = getApplication<Application>()//
-//        .getSharedPreferences(PREFERENCE_KEY, Application.MODE_PRIVATE)
-//
+    private val LIMIT_ID = 32
+    private var currentPostId = 6 //0
     private var _oldList = mutableListOf<CommentDto>()
-//
-//
-//    private val _timer = MutableLiveData<Long>()
-//    val timer: LiveData<Long>
-//        get() = _timer
+    private val _timer = MutableLiveData<Long>()
+    val timer: LiveData<Long>
+        get() = _timer
     val data: LiveData<List<CommentDto>>
         get() = repository.comments
-//    private val _state = MutableLiveData(false)
+
+    //    private val _state = MutableLiveData(false)
 //    val state: LiveData<Boolean>
 //        get() = _state
 //
     init {
         load()
     }
-//
+
+    //
     private fun load() {
 //        _state.value = true
-//        incAndPrefPostId()
+            incAndPrefPostId()
         viewModelScope.launch {
             try {
 //                _oldList.clear()
@@ -66,27 +61,27 @@ class CommentViewModel @Inject constructor(
         }
 //        timer()
     }
-//
-//    fun onClickEmail(toEmail: String) {
-//        val intent = Intent().apply {
-//            action = Intent.ACTION_SENDTO
-//            data = Uri.parse("mailto: $toEmail")
-//            flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//        }
-//        getApplication<Application>().startActivity(intent)
-//    }
-//
-//    fun clickComment(commentDto: CommentDto, navController: NavController) {
-//        val action = WidgetFragmentDirections.actionWidgetFragmentToCommentViewFragment(
-//            postId = commentDto.postId,
-//            id = commentDto.id,
-//            name = commentDto.name,
-//            email = commentDto.email,
-//            body = commentDto.body,
-//            date = commentDto.date
-//        )
-//        navController.navigate(action)
-//    }
+
+    fun onClickEmail(toEmail: String) {
+        val intent = Intent().apply {
+            action = Intent.ACTION_SENDTO
+            data = Uri.parse("mailto: $toEmail")
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        getApplication<Application>().startActivity(intent)
+    }
+
+    fun clickComment(commentDto: CommentDto, navController: NavController) {
+        val action = WidgetFragmentDirections.actionWidgetFragmentToCommentViewFragment(
+            postId = commentDto.postId,
+            id = commentDto.id,
+            name = commentDto.name,
+            email = commentDto.email,
+            body = commentDto.body,
+            date = commentDto.date
+        )
+        navController.navigate(action)
+    }
 //
 //    fun equalsLists(dataList: List<CommentDto>): List<CommentDto> {
 //        if (!dataList.containsAll(_oldList)) {
@@ -99,27 +94,27 @@ class CommentViewModel @Inject constructor(
 //        return dataList
 //    }
 //
-//    private fun incAndPrefPostId() {
-//        val prefValue = preferences.getInt(PREFERENCE_KEY, 0)
-//        currentPostId = if (prefValue == LIMIT_ID) {
-//            1
-//        } else {
-//            prefValue + 1
-//        }
-//        preferences.edit().putInt(PREFERENCE_KEY, currentPostId).apply()
-//    }
-//
-//    private fun timer() {
-//        val timer = object : CountDownTimer(60_000, 1_000) {
-//            override fun onTick(millisUntilFinished: Long) {
-//                _timer.value = millisUntilFinished / 1_000
-//            }
-//
-//            override fun onFinish() {
-//                load()
-//            }
-//        }
-//        timer.start()
-//    }
+    private fun incAndPrefPostId() {
+        val prefValue = preferences.getInt()
+        currentPostId = if (prefValue == LIMIT_ID) {
+            1
+        } else {
+            prefValue + 1
+        }
+        preferences.putInt(currentPostId)
+    }
+
+    private fun timer() {
+        val timer = object : CountDownTimer(60_000, 1_000) {
+            override fun onTick(millisUntilFinished: Long) {
+                _timer.value = millisUntilFinished / 1_000
+            }
+
+            override fun onFinish() {
+                load()
+            }
+        }
+        timer.start()
+    }
 
 }

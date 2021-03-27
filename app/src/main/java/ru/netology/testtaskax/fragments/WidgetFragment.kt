@@ -36,7 +36,7 @@ class WidgetFragment : Fragment() {
         val binding = FragmentWidgetBinding.inflate(layoutInflater)
         val adapter = CommentAdapter(object : IOnActionListener {
             override fun onClickComment(comment: CommentDto) {
-                //              viewModel.clickComment(comment, findNavController())
+                viewModel.clickComment(comment, findNavController())
             }
         })
         binding.rvCommentsView.adapter = adapter

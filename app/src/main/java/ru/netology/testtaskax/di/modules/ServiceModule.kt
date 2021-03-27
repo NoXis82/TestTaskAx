@@ -13,8 +13,9 @@ import javax.inject.Singleton
 
 @Module
 class ServiceModule {
-    private val BASE_URL = "https://jsonplaceholder.typicode.com/"
-
+    companion object {
+        private const val BASE_URL = "https://jsonplaceholder.typicode.com/"
+    }
     @Provides
     @Singleton
     fun provideOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
