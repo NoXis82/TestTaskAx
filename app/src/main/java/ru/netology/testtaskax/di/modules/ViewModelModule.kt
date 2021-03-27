@@ -9,7 +9,6 @@ import ru.netology.testtaskax.di.annotation.ViewModelKey
 import ru.netology.testtaskax.di.factory.ViewModelFactory
 import ru.netology.testtaskax.viewmodel.CommentViewModel
 
-
 @Module
 abstract class ViewModelModule {
 

@@ -1,7 +1,6 @@
 package ru.netology.testtaskax.di.components
 
 import dagger.Component
-import ru.netology.testtaskax.activity.MainActivity
 import ru.netology.testtaskax.di.modules.*
 import ru.netology.testtaskax.fragments.CommentViewFragment
 import ru.netology.testtaskax.fragments.WidgetFragment

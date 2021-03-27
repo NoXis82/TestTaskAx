@@ -10,12 +10,12 @@ import ru.netology.testtaskax.api.ICommentsApiService
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
-
 @Module
 class ServiceModule {
     companion object {
         private const val BASE_URL = "https://jsonplaceholder.typicode.com/"
     }
+
     @Provides
     @Singleton
     fun provideOkHttpClient(): OkHttpClient = OkHttpClient.Builder()

@@ -6,5 +6,5 @@ import ru.netology.testtaskax.dto.Comment
 
 interface ICommentsApiService {
     @GET("comments?")
-    suspend fun getAllComments(@Query("postId") id: Int): List<Comment>
+    suspend fun getAllComments(@Query("postId") id: Int): Response<List<Comment>>
 }

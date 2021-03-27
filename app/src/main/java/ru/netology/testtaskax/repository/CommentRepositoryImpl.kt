@@ -2,11 +2,11 @@ package ru.netology.testtaskax.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
-
 import ru.netology.testtaskax.api.ICommentsApiService
 import ru.netology.testtaskax.dao.ICommentDao
-import ru.netology.testtaskax.dto.Comment
 import ru.netology.testtaskax.dto.CommentDto
+import ru.netology.testtaskax.error.*
+import java.io.IOException
 import javax.inject.Singleton
 
 @Singleton
@@ -22,12 +22,20 @@ class CommentRepositoryImpl(
             }
         }
 
-    override suspend fun getAllComments(id: Int): List<Comment> {
-        val commentApi = api.getAllComments(id)
-        dao.insertList(commentApi.map(CommentDto.Companion::fromDto))
-        return commentApi
+    override suspend fun getAllComments(id: Int) {
+        try {
+            val response = api.getAllComments(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            dao.insertList(body.map(CommentDto.Companion::fromDto))
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
     }
 
     override suspend fun getList(): List<CommentDto> = dao.getList()
-
 }

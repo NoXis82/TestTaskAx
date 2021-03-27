@@ -13,5 +13,6 @@
     <string name="title_widget_fragment">Список комментариев</string>
     <string name="title_comment_view">Комментарий</string>
     <string name="title_text_view">В %s оставил(а) комментарий:</string>
-    <string name="error_connect">Ошибка соединения</string>
+    <string name="error_loading">Ошибка при загрузки данных</string>
+    <string name="retry_loading">Повторить</string>
 </resources>
