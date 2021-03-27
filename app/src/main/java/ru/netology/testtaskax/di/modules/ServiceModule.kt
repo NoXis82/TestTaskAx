@@ -31,7 +31,6 @@ class ServiceModule {
             .client(okHttpClient)
             .build()
 
-
     @Provides
     @Singleton
     fun provideGeneralService(retrofit: Retrofit): ICommentsApiService =

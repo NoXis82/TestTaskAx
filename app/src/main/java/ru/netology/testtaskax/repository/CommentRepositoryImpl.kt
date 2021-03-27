@@ -5,6 +5,7 @@ import androidx.lifecycle.map
 
 import ru.netology.testtaskax.api.ICommentsApiService
 import ru.netology.testtaskax.dao.ICommentDao
+import ru.netology.testtaskax.dto.Comment
 import ru.netology.testtaskax.dto.CommentDto
 import javax.inject.Singleton
 
@@ -21,9 +22,10 @@ class CommentRepositoryImpl(
             }
         }
 
-    override suspend fun getAllComments(id: Int) {
+    override suspend fun getAllComments(id: Int): List<Comment> {
         val commentApi = api.getAllComments(id)
         dao.insertList(commentApi.map(CommentDto.Companion::fromDto))
+        return commentApi
     }
 
     override suspend fun getList(): List<CommentDto> = dao.getList()

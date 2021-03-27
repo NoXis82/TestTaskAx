@@ -5,53 +5,56 @@ import android.content.Intent
 import android.net.Uri
 import android.os.CountDownTimer
 import android.widget.Toast
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import ru.netology.testtaskax.App
 import ru.netology.testtaskax.R
 import ru.netology.testtaskax.dto.CommentDto
 import ru.netology.testtaskax.fragments.WidgetFragmentDirections
+import ru.netology.testtaskax.repository.ICommentRepository
 import java.io.IOException
+import javax.inject.Inject
 
-class CommentViewModel(application: Application) : AndroidViewModel(application) {
+class CommentViewModel @Inject constructor(
+    private val repository: ICommentRepository
+) : ViewModel()
+{
+
+
 //    private val LIMIT_ID = 32
 //    private val PREFERENCE_KEY = "postId"
-//    private var currentPostId = 0
+    private var currentPostId = 1 //0
 //
 //    private val preferences = getApplication<Application>()//
 //        .getSharedPreferences(PREFERENCE_KEY, Application.MODE_PRIVATE)
 //
-//    private var _oldList = mutableListOf<CommentDto>()
+    private var _oldList = mutableListOf<CommentDto>()
 //
-//    private val repository = App.repository//
 //
 //    private val _timer = MutableLiveData<Long>()
 //    val timer: LiveData<Long>
 //        get() = _timer
-//    val data: LiveData<List<CommentDto>>
-//        get() = repository.comments
+    val data: LiveData<List<CommentDto>>
+        get() = repository.comments
 //    private val _state = MutableLiveData(false)
 //    val state: LiveData<Boolean>
 //        get() = _state
 //
-//    init {
-//        load()
-//    }
+    init {
+        load()
+    }
 //
-//    private fun load() {
+    private fun load() {
 //        _state.value = true
 //        incAndPrefPostId()
-//        viewModelScope.launch {
-//            try {
+        viewModelScope.launch {
+            try {
 //                _oldList.clear()
 //                _oldList = repository.getList().toMutableList()
-//                repository.getAllComments(id = currentPostId)
+                repository.getAllComments(id = currentPostId)
 //                _state.value = false
-//            } catch (e: IOException) {
+            } catch (e: IOException) {
 //                e.printStackTrace()
 //                Toast.makeText(
 //                    getApplication<Application>().applicationContext,
@@ -59,10 +62,10 @@ class CommentViewModel(application: Application) : AndroidViewModel(application)
 //                    Toast.LENGTH_SHORT
 //                ).show()
 //                _state.value = false
-//            }
-//        }
+            }
+        }
 //        timer()
-//    }
+    }
 //
 //    fun onClickEmail(toEmail: String) {
 //        val intent = Intent().apply {

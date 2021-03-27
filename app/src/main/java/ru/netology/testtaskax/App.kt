@@ -4,13 +4,13 @@ import android.app.Application
 import ru.netology.testtaskax.db.AppDb
 import ru.netology.testtaskax.di.components.AppComponent
 import ru.netology.testtaskax.di.components.DaggerAppComponent
+import ru.netology.testtaskax.di.modules.AppModule
 
 
 class App : Application() {
 
     companion object {
-        lateinit var appComponent: AppComponent // Dagger 2
-        private var appDb: AppDb? = null
+        lateinit var appComponent: AppComponent
     }
 
     override fun onCreate() {
@@ -19,7 +19,9 @@ class App : Application() {
     }
 
     private fun initDagger() {
-        appComponent = DaggerAppComponent.builder()
+        appComponent = DaggerAppComponent
+            .builder()
+            .appModule(AppModule(applicationContext))
             .build()
     }
 
