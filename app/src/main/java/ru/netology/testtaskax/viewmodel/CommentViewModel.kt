@@ -19,7 +19,6 @@ import ru.netology.testtaskax.dto.State
 import ru.netology.testtaskax.fragments.WidgetFragmentDirections
 import ru.netology.testtaskax.repository.ICommentRepository
 import ru.netology.testtaskax.sharedpref.IPreferencesHelper
-import java.io.IOException
 import javax.inject.Inject
 
 class CommentViewModel @Inject constructor(
@@ -107,7 +106,7 @@ class CommentViewModel @Inject constructor(
     }
 
     private fun timer() {
-        val timer = object : CountDownTimer(10_000, 1_000) {
+        val timer = object : CountDownTimer(60_000, 1_000) {
             override fun onTick(millisUntilFinished: Long) {
                 _timer.value = millisUntilFinished / 1_000
             }
