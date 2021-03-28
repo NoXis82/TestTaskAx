@@ -1,5 +1,6 @@
 package ru.netology.testtaskax.fragments
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -24,11 +25,15 @@ class WidgetFragment : Fragment() {
 
     private lateinit var viewModel: CommentViewModel
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        App.appComponent.inject(this)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        App.appComponent.inject(this)
         viewModel = ViewModelProvider(this, viewModelFactory).get(CommentViewModel::class.java)
         val binding = FragmentWidgetBinding.inflate(layoutInflater)
         val adapter = CommentAdapter(object : IOnActionListener {
@@ -40,7 +45,7 @@ class WidgetFragment : Fragment() {
         viewModel.data.observe(viewLifecycleOwner) { list ->
             adapter.submitList(viewModel.equalsLists(list))
         }
-        viewModel.timer.observe(viewLifecycleOwner) {time ->
+        viewModel.timer.observe(viewLifecycleOwner) { time ->
             binding.tvTimer.text = requireContext().getString(R.string.title_timer, time.toString())
         }
         viewModel.dataState.observe(viewLifecycleOwner) { state ->

@@ -1,5 +1,6 @@
 package ru.netology.testtaskax.fragments
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -18,11 +19,15 @@ class CommentViewFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: CommentViewModel
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        App.appComponent.inject(this)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        App.appComponent.inject(this)
         viewModel = ViewModelProvider(this, viewModelFactory).get(CommentViewModel::class.java)
         val binding = FragmentCommentViewBinding.inflate(layoutInflater)
         val postId = arguments?.let { CommentViewFragmentArgs.fromBundle(it).postId }
