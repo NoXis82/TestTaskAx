@@ -27,7 +27,6 @@ class CommentAdapter(
         val comment = getItem(position)
         holder.bind(comment, holder.itemView.context)
     }
-
 }
 
 class CommentViewHolder(

@@ -1,23 +1,34 @@
 package ru.netology.testtaskax.fragments
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import ru.netology.testtaskax.App
 import ru.netology.testtaskax.R
 import ru.netology.testtaskax.databinding.FragmentCommentViewBinding
 import ru.netology.testtaskax.viewmodel.CommentViewModel
 import java.util.*
+import javax.inject.Inject
 
 class CommentViewFragment : Fragment() {
-    private val viewModel: CommentViewModel by viewModels(ownerProducer = ::requireParentFragment)
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var viewModel: CommentViewModel
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        App.appComponent.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel = ViewModelProvider(this, viewModelFactory).get(CommentViewModel::class.java)
         val binding = FragmentCommentViewBinding.inflate(layoutInflater)
         val postId = arguments?.let { CommentViewFragmentArgs.fromBundle(it).postId }
         val commentId = arguments?.let { CommentViewFragmentArgs.fromBundle(it).id }

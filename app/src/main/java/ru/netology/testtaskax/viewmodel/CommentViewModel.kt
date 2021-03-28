@@ -10,51 +10,54 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import ru.netology.testtaskax.App
+import kotlinx.coroutines.withContext
 import ru.netology.testtaskax.R
 import ru.netology.testtaskax.dto.CommentDto
+import ru.netology.testtaskax.dto.State
 import ru.netology.testtaskax.fragments.WidgetFragmentDirections
-import java.io.IOException
+import ru.netology.testtaskax.repository.ICommentRepository
+import ru.netology.testtaskax.sharedpref.IPreferencesHelper
+import javax.inject.Inject
 
-class CommentViewModel(application: Application) : AndroidViewModel(application) {
-    private val LIMIT_ID = 32
-    private val PREFERENCE_KEY = "postId"
+class CommentViewModel @Inject constructor(
+    app: Application,
+    private val repository: ICommentRepository,
+    private val preferences: IPreferencesHelper
+) : AndroidViewModel(app) {
+    companion object {
+        private const val LIMIT_ID = 32
+    }
+
     private var currentPostId = 0
-    private val preferences = getApplication<Application>()
-        .getSharedPreferences(PREFERENCE_KEY, Application.MODE_PRIVATE)
     private var _oldList = mutableListOf<CommentDto>()
-    private val repository = App.repository
     private val _timer = MutableLiveData<Long>()
     val timer: LiveData<Long>
         get() = _timer
     val data: LiveData<List<CommentDto>>
         get() = repository.comments
-    private val _state = MutableLiveData(false)
-    val state: LiveData<Boolean>
-        get() = _state
+    private val _dataState = MutableLiveData<State>()
+    val dataState: LiveData<State>
+        get() = _dataState
 
     init {
         load()
     }
 
-    private fun load() {
-        _state.value = true
+    fun load() {
+        _dataState.value = State(loading = true)
         incAndPrefPostId()
         viewModelScope.launch {
             try {
                 _oldList.clear()
-                _oldList = repository.getList().toMutableList()
+                withContext(Dispatchers.IO) {
+                    _oldList = repository.getList().toMutableList()
+                }
                 repository.getAllComments(id = currentPostId)
-                _state.value = false
-            } catch (e: IOException) {
-                e.printStackTrace()
-                Toast.makeText(
-                    getApplication<Application>().applicationContext,
-                    R.string.error_connect,
-                    Toast.LENGTH_SHORT
-                ).show()
-                _state.value = false
+                _dataState.value = State()
+            } catch (e: Exception) {
+                _dataState.value = State(error = true)
             }
         }
         timer()
@@ -93,13 +96,13 @@ class CommentViewModel(application: Application) : AndroidViewModel(application)
     }
 
     private fun incAndPrefPostId() {
-        val prefValue = preferences.getInt(PREFERENCE_KEY, 0)
+        val prefValue = preferences.getInt()
         currentPostId = if (prefValue == LIMIT_ID) {
             1
         } else {
             prefValue + 1
         }
-        preferences.edit().putInt(PREFERENCE_KEY, currentPostId).apply()
+        preferences.putInt(currentPostId)
     }
 
     private fun timer() {
